@@ -165,12 +165,15 @@ def build_timeline():
         starts.append(t)
         t += d + PIECE_GAP
     vo_total = t
-    # two cuts per narration piece: at its start and just past its middle
+    # exactly two shots per narration piece: one at its start, one at 52%
+    need = 2 * len(pieces)
+    if need != len(SHOTS):
+        print(f"  !! {len(pieces)} narration pieces but {len(SHOTS)} shots "
+              f"(need {need}) -- rebalance SHOTS or vo10.json")
     cuts = []
     for st, d in zip(starts, durs):
         cuts.extend([st, st + d * 0.52])
     cuts.append(vo_total)
-    cuts = sorted(cuts)
 
     shots = []
     for i in range(len(cuts) - 1):
