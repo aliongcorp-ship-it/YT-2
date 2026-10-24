@@ -7,3 +7,13 @@ audio/vo/*.mp3
 art/raw/*.png
 *.tmp
 .DS_Store
+google_drive/
+
+# raw generated plates for the Short are kept OUT of git (they are large
+# intermediates); the composited 9:16 frames and all code/docs are tracked.
+art/short/
+art/short2/t*.png
+art/short2/_sheet.png
+!art/short2/f/
+audio/vo_short/*.mp3
+audio/short_mix.wav

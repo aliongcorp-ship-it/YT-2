@@ -1,6 +1,10 @@
 # Paket Unggah YouTube — Bab 1: Toba
 
 > Siap tempel. Semua di bawah ini berbasis `docs/00-analisis.md`.
+>
+> **Durasi final video: 12:07. Narasi: 10 bait / 716 detik. 10 bab.**
+> File: `video/KALDERA_Bab1_Toba_1080p.mp4` · Subtitle: `social/KALDERA_Bab1_ID.srt`
+> Thumbnail: `social/thumb_B_question_1280x720.jpg`
 
 ---
 
@@ -17,13 +21,6 @@ Alasan: 52 karakter, "Toba" di depan, angka spesifik, dan klaim dramatis yang
 **Kandidat lain (untuk Test & Compare berikutnya):**
 ```
 Letusan Toba 74.000 Tahun Lalu: Apakah Kita Hampir Punah?
-Ternyata Toba Tidak Hampir Memusnahkan Kita (Bukti 2024)
-Gunung di Sumatera Ini Melebihi Yellowstone 28 Kali
-```
-
-**Alternatif (untuk Test & Compare):**
-```
-Toba Meledak 74.000 Tahun Lalu, dan Kita Nyaris Punah
 Ternyata Toba Tidak Hampir Memusnahkan Kita (Bukti 2024)
 Gunung di Sumatera Ini Melebihi Yellowstone 28 Kali
 ```
@@ -51,16 +48,16 @@ Kalau kamu ingin tahu bahwa bencana terbesar dalam sejarah manusia ternyata
 bukan cerita tentang kepunahan, video ini untukmu.
 
 00:00 Langit yang berubah menjadi bara
-00:38 Legenda di tepi danau
-01:58 Bentuk yang tidak mungkin
-03:12 Tanda-tanda sebelum ledakan
-04:18 Ledakan yang mengubah dunia
-05:22 Neraka yang bergerak
-06:30 Dunia tanpa matahari
-07:42 Kota yang runtuh
-08:52 Apakah kita hampir punah?
-09:58 Bukti yang membantah
-11:00 Kenapa kita masih ada
+01:12 Legenda di tepi danau
+01:52 Bentuk yang tidak mungkin
+02:30 Gunung yang tidak ada lagi
+03:08 Tanda-tanda
+03:44 Skala yang tidak masuk akal
+04:55 Neraka yang bergerak
+06:04 Dunia tanpa matahari
+06:40 Kota yang runtuh
+07:14 Apakah kita hampir punah?
+10:37 Kenapa kita masih ada
 
 SUMBER & BACAAN
 • Kappelman dkk., "Adaptive foraging and the North African Stone Age during
