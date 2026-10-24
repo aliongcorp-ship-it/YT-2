@@ -49,35 +49,48 @@ FF = imageio_ffmpeg.get_ffmpeg_exe()
 # ----------------------------------------------------------------- timeline
 # Each shot: plates, VO pieces covered, KAL pose, camera start/end, KAL anchor
 # (anchor is in final-frame coords and is parallaxed by the camera).
+# 20 shots = 2 per narration piece. Shot 2i starts piece i, shot 2i+1 starts
+# at 52% of that piece. Chapter labels sit on the shot that opens the chapter.
 SHOTS = [
+    # --- p0  teaser -------------------------------------------------------
     dict(plate="img-05", pos="shock",   h=384, sx=0.18, sy=0.90, zoom=(1.00, 1.12), cxy=(0.50, 0.56), label=None),
+    dict(plate="img-06", pos="run",     h=409, sx=0.76, sy=0.92, zoom=(1.04, 1.18), cxy=(0.50, 0.52), label=None),
+    # --- p1  legenda + bentuk kaldera ------------------------------------
     dict(plate="img-01", pos="present", h=409, sx=0.22, sy=0.90, zoom=(1.14, 1.02), cxy=(0.52, 0.55),
          label="BAB 1 · LEGENDA DI TEPI DANAU"),
-    dict(plate="img-01", pos="lookup",  h=380, sx=0.72, sy=0.88, zoom=(1.00, 1.10), cxy=(0.38, 0.50), label=None),
     dict(plate="img-02", pos="lookup",  h=320, sx=0.26, sy=0.93, zoom=(1.02, 1.16), cxy=(0.46, 0.50),
          label="BAB 2 · BENTUK YANG TIDAK MUNGKIN"),
-    dict(plate="img-02", pos="present", h=300, sx=0.74, sy=0.92, zoom=(1.16, 1.04), cxy=(0.60, 0.46), label=None),
+    # --- p2  empat letusan + tanda-tanda ---------------------------------
     dict(plate="img-03", pos="brave",   h=384, sx=0.20, sy=0.94, zoom=(1.14, 1.00), cxy=(0.55, 0.48),
          label="BAB 3 · GUNUNG YANG TIDAK ADA LAGI"),
     dict(plate="img-04", pos="crouch",  h=345, sx=0.30, sy=0.90, zoom=(1.00, 1.14), cxy=(0.42, 0.55),
          label="BAB 4 · TANDA-TANDA"),
+    # --- p3  skala VEI ----------------------------------------------------
+    dict(plate="img-05", pos="shock",   h=358, sx=0.78, sy=0.90, zoom=(1.22, 1.06), cxy=(0.55, 0.50),
+         label="BAB 5 · SKALA YANG TIDAK MASUK AKAL"),
     dict(plate="img-03", pos="point",   h=360, sx=0.62, sy=0.93, zoom=(1.00, 1.12), cxy=(0.30, 0.60), label=None),
-    dict(plate="img-05", pos="shock",   h=358, sx=0.78, sy=0.90, zoom=(1.22, 1.06), cxy=(0.55, 0.50), label=None),
+    # --- p4  kolom abu + aliran piroklastik ------------------------------
     dict(plate="img-06", pos="run",     h=409, sx=0.74, sy=0.92, zoom=(1.03, 1.18), cxy=(0.50, 0.52),
-         label="BAB 5 · NERAKA YANG BERGERAK"),
-    dict(plate="img-06", pos="brave",   h=380, sx=0.24, sy=0.93, zoom=(1.18, 1.02), cxy=(0.35, 0.55), label=None),
-    dict(plate="img-07", pos="walk",    h=384, sx=0.24, sy=0.93, zoom=(1.15, 1.01), cxy=(0.48, 0.56),
-         label="BAB 6 · DUNIA TANPA MATAHARI"),
-    dict(plate="img-07", pos="crouch",  h=360, sx=0.70, sy=0.94, zoom=(1.00, 1.12), cxy=(0.60, 0.52), label=None),
+         label="BAB 6 · NERAKA YANG BERGERAK"),
+    dict(plate="img-07", pos="walk",    h=384, sx=0.24, sy=0.93, zoom=(1.15, 1.01), cxy=(0.48, 0.56), label=None),
+    # --- p5  ozon, musim pendek, keruntuhan ------------------------------
+    dict(plate="img-07", pos="crouch",  h=360, sx=0.70, sy=0.94, zoom=(1.00, 1.12), cxy=(0.60, 0.52),
+         label="BAB 7 · DUNIA TANPA MATAHARI"),
     dict(plate="img-09", pos="point",   h=384, sx=0.20, sy=0.93, zoom=(1.00, 1.14), cxy=(0.52, 0.48),
-         label="BAB 7 · KOTA YANG RUNTUH"),
-    dict(plate="img-08", pos="crouch",  h=422, sx=0.40, sy=0.94, zoom=(1.12, 1.00), cxy=(0.44, 0.54),
-         label="BAB 8 · APAKAH KITA HAMPIR PUNAH?"),
+         label="BAB 8 · KOTA YANG RUNTUH"),
+    # --- p6  Samosir + hipotesis Ambrose --------------------------------
+    dict(plate="img-09", pos="lookup",  h=380, sx=0.72, sy=0.92, zoom=(1.16, 1.02), cxy=(0.40, 0.50),
+         label="BAB 9 · APAKAH KITA HAMPIR PUNAH?"),
+    dict(plate="img-08", pos="crouch",  h=422, sx=0.40, sy=0.94, zoom=(1.12, 1.00), cxy=(0.44, 0.54), label=None),
+    # --- p7  bukti arkeologi --------------------------------------------
     dict(plate="img-08", pos="listen",  h=422, sx=0.40, sy=0.94, zoom=(1.00, 1.10), cxy=(0.52, 0.52), label=None),
-    dict(plate="img-09", pos="think",   h=360, sx=0.74, sy=0.93, zoom=(1.14, 1.02), cxy=(0.30, 0.52), label=None),
+    dict(plate="img-08", pos="present", h=400, sx=0.76, sy=0.93, zoom=(1.12, 1.00), cxy=(0.35, 0.54), label=None),
+    # --- p8  genetika / founder effect ----------------------------------
     dict(plate="img-02", pos="present", h=320, sx=0.26, sy=0.93, zoom=(1.20, 1.04), cxy=(0.50, 0.52), label=None),
+    dict(plate="img-03", pos="brave",   h=370, sx=0.70, sy=0.93, zoom=(1.00, 1.14), cxy=(0.45, 0.52), label=None),
+    # --- p9  Nusantara + penutup ----------------------------------------
     dict(plate="img-10", pos="lookup",  h=345, sx=0.30, sy=0.92, zoom=(1.02, 1.16), cxy=(0.46, 0.56),
-         label="BAB 9 · KENAPA KITA MASIH ADA"),
+         label="BAB 10 · KENAPA KITA MASIH ADA"),
     dict(plate="img-10", pos="walk",    h=345, sx=0.72, sy=0.92, zoom=(1.16, 1.04), cxy=(0.60, 0.55), label=None),
 ]
 

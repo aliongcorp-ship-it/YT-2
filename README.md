@@ -55,3 +55,26 @@ env/bin/python tools/render_video.py --mux
 ```
 
 Butuh `ffmpeg` (otomatis lewat `imageio-ffmpeg`), RAM ±3 GB, 2 core.
+
+
+---
+
+## Build (satu perintah)
+
+```bash
+bash tools/build_all.sh     # plan -> mix -> srt -> render -> mux
+```
+
+| Tahap | Skrip | Keluaran |
+|---|---|---|
+| 1 | `tools/render_video.py --plan` | `scripts/timeline.json` |
+| 2 | `tools/mix.py` | `audio/final_mix.wav` (-16 LUFS / -1.5 dBTP) |
+| 3 | `tools/make_srt.py` | `social/KALDERA_Bab1_ID.srt` |
+| 4 | `tools/render_video.py --render` | `video/_video.mp4` (1080p24, CRF 20) |
+| 5 | `tools/render_video.py --mux` | `video/KALDERA_Bab1_Toba_1080p.mp4` |
+
+Aset statis: `tools/compose_art.py` (plate + KAL -> `art/final/`),
+`tools/audio.py all` (4 musik + 12 SFX), `tools/make_thumbs.py` (3 thumbnail).
+
+Timeline dibangun **dari durasi narasi** (`audio/vo/vo10_*.mp3`), jadi setiap
+perubahan teks otomatis menggeser shot, musik, SFX, dan subtitle.
