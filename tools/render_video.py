@@ -50,37 +50,37 @@ FF = imageio_ffmpeg.get_ffmpeg_exe()
 # Each shot: plates, VO pieces covered, KAL pose, camera start/end, KAL anchor
 # (anchor is in final-frame coords and is parallaxed by the camera).
 SHOTS = [
-    # sx / sy = KAL's horizontal spot and ground line on screen (0..1)
-    dict(plate="img-05", pos="shock",   h=384, sx=0.18, sy=0.90,
-         zoom=(1.00, 1.13), cxy=(0.50, 0.56), label=None),
-    dict(plate="img-01", pos="present", h=409, sx=0.22, sy=0.90,
-         zoom=(1.16, 1.02), cxy=(0.52, 0.55), label="BAB 1 · LEGENDA DI TEPI DANAU"),
-    dict(plate="img-02", pos="lookup",  h=320, sx=0.26, sy=0.93,
-         zoom=(1.02, 1.17), cxy=(0.46, 0.50), label="BAB 2 · BENTUK YANG TIDAK MUNGKIN"),
-    dict(plate="img-03", pos="brave",   h=384, sx=0.20, sy=0.94,
-         zoom=(1.14, 1.00), cxy=(0.55, 0.48), label="BAB 3 · GUNUNG YANG TIDAK ADA LAGI"),
-    dict(plate="img-04", pos="crouch",  h=345, sx=0.30, sy=0.90,
-         zoom=(1.00, 1.15), cxy=(0.42, 0.55), label="BAB 4 · TANDA-TANDA"),
-    dict(plate="img-05", pos="shock",   h=358, sx=0.78, sy=0.90,
-         zoom=(1.22, 1.06), cxy=(0.55, 0.50), label=None),
-    dict(plate="img-06", pos="run",     h=409, sx=0.74, sy=0.92,
-         zoom=(1.03, 1.18), cxy=(0.50, 0.52), label="BAB 5 · NERAKA YANG BERGERAK"),
-    dict(plate="img-07", pos="walk",    h=384, sx=0.24, sy=0.93,
-         zoom=(1.15, 1.01), cxy=(0.48, 0.56), label="BAB 6 · DUNIA TANPA MATAHARI"),
-    dict(plate="img-09", pos="point",   h=384, sx=0.20, sy=0.93,
-         zoom=(1.00, 1.14), cxy=(0.52, 0.48), label="BAB 7 · KOTA YANG RUNTUH"),
-    dict(plate="img-08", pos="crouch",  h=422, sx=0.40, sy=0.94,
-         zoom=(1.12, 1.00), cxy=(0.44, 0.54), label="BAB 8 · APAKAH KITA HAMPIR PUNAH?"),
-    dict(plate="img-08", pos="listen",  h=422, sx=0.40, sy=0.94,
-         zoom=(1.00, 1.10), cxy=(0.52, 0.52), label=None),
-    dict(plate="img-02", pos="present", h=320, sx=0.26, sy=0.93,
-         zoom=(1.20, 1.04), cxy=(0.50, 0.52), label=None),
-    dict(plate="img-10", pos="lookup",  h=345, sx=0.30, sy=0.92,
-         zoom=(1.02, 1.16), cxy=(0.46, 0.56), label="BAB 9 · KENAPA KITA MASIH ADA"),
+    dict(plate="img-05", pos="shock",   h=384, sx=0.18, sy=0.90, zoom=(1.00, 1.12), cxy=(0.50, 0.56), label=None),
+    dict(plate="img-01", pos="present", h=409, sx=0.22, sy=0.90, zoom=(1.14, 1.02), cxy=(0.52, 0.55),
+         label="BAB 1 · LEGENDA DI TEPI DANAU"),
+    dict(plate="img-01", pos="lookup",  h=380, sx=0.72, sy=0.88, zoom=(1.00, 1.10), cxy=(0.38, 0.50), label=None),
+    dict(plate="img-02", pos="lookup",  h=320, sx=0.26, sy=0.93, zoom=(1.02, 1.16), cxy=(0.46, 0.50),
+         label="BAB 2 · BENTUK YANG TIDAK MUNGKIN"),
+    dict(plate="img-02", pos="present", h=300, sx=0.74, sy=0.92, zoom=(1.16, 1.04), cxy=(0.60, 0.46), label=None),
+    dict(plate="img-03", pos="brave",   h=384, sx=0.20, sy=0.94, zoom=(1.14, 1.00), cxy=(0.55, 0.48),
+         label="BAB 3 · GUNUNG YANG TIDAK ADA LAGI"),
+    dict(plate="img-04", pos="crouch",  h=345, sx=0.30, sy=0.90, zoom=(1.00, 1.14), cxy=(0.42, 0.55),
+         label="BAB 4 · TANDA-TANDA"),
+    dict(plate="img-03", pos="point",   h=360, sx=0.62, sy=0.93, zoom=(1.00, 1.12), cxy=(0.30, 0.60), label=None),
+    dict(plate="img-05", pos="shock",   h=358, sx=0.78, sy=0.90, zoom=(1.22, 1.06), cxy=(0.55, 0.50), label=None),
+    dict(plate="img-06", pos="run",     h=409, sx=0.74, sy=0.92, zoom=(1.03, 1.18), cxy=(0.50, 0.52),
+         label="BAB 5 · NERAKA YANG BERGERAK"),
+    dict(plate="img-06", pos="brave",   h=380, sx=0.24, sy=0.93, zoom=(1.18, 1.02), cxy=(0.35, 0.55), label=None),
+    dict(plate="img-07", pos="walk",    h=384, sx=0.24, sy=0.93, zoom=(1.15, 1.01), cxy=(0.48, 0.56),
+         label="BAB 6 · DUNIA TANPA MATAHARI"),
+    dict(plate="img-07", pos="crouch",  h=360, sx=0.70, sy=0.94, zoom=(1.00, 1.12), cxy=(0.60, 0.52), label=None),
+    dict(plate="img-09", pos="point",   h=384, sx=0.20, sy=0.93, zoom=(1.00, 1.14), cxy=(0.52, 0.48),
+         label="BAB 7 · KOTA YANG RUNTUH"),
+    dict(plate="img-08", pos="crouch",  h=422, sx=0.40, sy=0.94, zoom=(1.12, 1.00), cxy=(0.44, 0.54),
+         label="BAB 8 · APAKAH KITA HAMPIR PUNAH?"),
+    dict(plate="img-08", pos="listen",  h=422, sx=0.40, sy=0.94, zoom=(1.00, 1.10), cxy=(0.52, 0.52), label=None),
+    dict(plate="img-09", pos="think",   h=360, sx=0.74, sy=0.93, zoom=(1.14, 1.02), cxy=(0.30, 0.52), label=None),
+    dict(plate="img-02", pos="present", h=320, sx=0.26, sy=0.93, zoom=(1.20, 1.04), cxy=(0.50, 0.52), label=None),
+    dict(plate="img-10", pos="lookup",  h=345, sx=0.30, sy=0.92, zoom=(1.02, 1.16), cxy=(0.46, 0.56),
+         label="BAB 9 · KENAPA KITA MASIH ADA"),
+    dict(plate="img-10", pos="walk",    h=345, sx=0.72, sy=0.92, zoom=(1.16, 1.04), cxy=(0.60, 0.55), label=None),
 ]
 
-# which VO piece index starts which shot (piece indices refer to scripts/vo_pieces.json)
-SHOT_VO = [0, 2, 3, 5, 6, 8, 9, 11, 13, 15, 17, 18, 19]
 PIECE_GAP = 0.42        # breath between narration pieces
 OUTRO = 11.0            # brand outro after narration ends
 HOOK_TITLE = (1.6, 7.2)  # hook title visible window
@@ -154,9 +154,9 @@ def load_plates() -> dict[str, Image.Image]:
 
 
 def build_timeline():
-    pieces = sorted(glob.glob(os.path.join(VO, "pc_*.mp3")))
+    pieces = sorted(glob.glob(os.path.join(VO, "vo10_*.mp3")))
     if not pieces:
-        pieces = sorted(glob.glob(os.path.join(VO, "*.mp3")))
+        pieces = sorted(glob.glob(os.path.join(VO, "pc_*.mp3")))
     if not pieces:
         raise SystemExit("no narration clips found in audio/vo")
     durs = [ff_duration(p) for p in pieces]
@@ -165,12 +165,20 @@ def build_timeline():
         starts.append(t)
         t += d + PIECE_GAP
     vo_total = t
-    idxs = [min(i, len(starts) - 1) for i in SHOT_VO]
-    cuts = [starts[i] for i in idxs] + [vo_total]
+    # two cuts per narration piece: at its start and just past its middle
+    cuts = []
+    for st, d in zip(starts, durs):
+        cuts.extend([st, st + d * 0.52])
+    cuts.append(vo_total)
+    cuts = sorted(cuts)
+
     shots = []
-    for i, spec in enumerate(SHOTS):
-        s, e = cuts[i], cuts[i + 1]
-        shots.append(dict(spec, start=s, end=e, dur=max(2.0, e - s),
+    for i in range(len(cuts) - 1):
+        spec = dict(SHOTS[i % len(SHOTS)])
+        if i >= len(SHOTS):
+            spec["label"] = None
+        s0, e0 = cuts[i], cuts[i + 1]
+        shots.append(dict(spec, start=s0, end=e0, dur=max(1.5, e0 - s0),
                           camera="in" if spec["zoom"][1] > spec["zoom"][0] else "out"))
     total = vo_total + OUTRO
     tl = dict(pieces=pieces, durs=durs, starts=starts, vo_total=vo_total,

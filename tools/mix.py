@@ -62,33 +62,42 @@ def place(dst: np.ndarray, src: np.ndarray, at: float, gain: float = 1.0):
     dst[i:i + len(seg)] += seg * gain
 
 
-def loop_to(x: np.ndarray, n: int, fade=1.2) -> np.ndarray:
-    out = np.zeros(n, dtype=np.float32)
+def loop_to(x: np.ndarray, n: int, fade=2.0) -> np.ndarray:
+    """Seamless loop with equal-power crossfades at the joins."""
+    out = np.zeros(n + int(fade * SR) * 2, dtype=np.float32)
+    f = int(fade * SR)
     i = 0
-    while i < n:
-        seg = x[: min(len(x), n - i)]
-        out[i:i + len(seg)] += seg * np.hanning(len(seg) * 2 + 2)[:len(seg)].astype(np.float32) ** 0.15
-        i += len(x) - int(fade * SR)
-    return out
+    ramp = np.sqrt(np.linspace(0, 1, f)).astype(np.float32)
+    first = True
+    while i < len(out):
+        seg = x
+        room = len(out) - i
+        if room <= 0:
+            break
+        seg = seg[:room]
+        if not first and len(seg) >= f:
+            seg = seg.copy()
+            seg[:f] *= ramp
+        out[i:i + len(seg)] += seg
+        i += max(1, len(seg) - f)
+        first = False
+    return out[:n]
 
 
-def duck(music: np.ndarray, vo: np.ndarray, depth=0.55, attack=0.18, release=0.75):
-    """Sidechain-style ducking driven by the voice envelope."""
+def duck(music: np.ndarray, vo: np.ndarray, depth=0.55, attack=0.02, release=0.45):
+    """Sidechain ducking: instant-ish attack, slow release, fully vectorised."""
+    from scipy.signal import lfilter
     env = np.abs(vo)
-    # smooth envelope
-    k = int(0.12 * SR)
-    env = np.convolve(env, np.ones(k) / k, mode="same")
-    env = np.clip(env / (np.percentile(env[env > 1e-4], 90) + 1e-6), 0, 1)
-    # attack/release smoothing
-    out = np.empty_like(env)
-    a = np.exp(-1 / (attack * SR))
-    r = np.exp(-1 / (release * SR))
-    prev = 0.0
-    for i in range(0, len(env), 1):
-        c = a if env[i] > prev else r
-        prev = c * prev + (1 - c) * env[i]
-        out[i] = prev
-    return music * (1.0 - depth * out)
+    k = int(0.05 * SR)
+    env = np.convolve(env, np.ones(k, dtype=np.float32) / k, mode="same")
+    ref = np.percentile(env[env > 1e-5], 90) + 1e-6
+    env = np.clip(env / ref, 0, 1).astype(np.float32)
+    a_fast = float(np.exp(-1.0 / (attack * SR)))
+    a_slow = float(np.exp(-1.0 / (release * SR)))
+    fast = lfilter([1 - a_fast], [1, -a_fast], env).astype(np.float32)
+    slow = lfilter([1 - a_slow], [1, -a_slow], env).astype(np.float32)
+    take = np.maximum(fast, slow)
+    return (music * (1.0 - depth * take)).astype(np.float32)
 
 
 def main():
@@ -103,9 +112,9 @@ def main():
     print(f"timeline: {total:.1f}s")
 
     # ---------------------------------------------------------------- voice
-    pieces = sorted(glob.glob(os.path.join(VO, "pc_*.mp3")))
+    pieces = sorted(glob.glob(os.path.join(VO, "vo10_*.mp3")))
     if not pieces:
-        pieces = sorted(glob.glob(os.path.join(VO, "*.mp3")))
+        pieces = sorted(glob.glob(os.path.join(VO, "pc_*.mp3")))
     vo_track = np.zeros(n, dtype=np.float32)
     for p, st in zip(pieces, tl["starts"]):
         x = read_any(p)
@@ -123,17 +132,33 @@ def main():
         "B2": read_any(os.path.join(AUD, "mus_b_eruption.wav")),
         "C": read_any(os.path.join(AUD, "mus_c_hope.wav")),
     }
-    # act boundaries in seconds (from the shot plan)
+    # -------------------------------------------------- act boundaries
     shots = tl["shots"]
-    marks = {s["label"]: s["start"] for s in shots if s.get("label")}
+
+    def at(label_part: str, default: float) -> float:
+        for sh in shots:
+            if sh.get("label") and label_part in sh["label"]:
+                return sh["start"]
+        return default
+
+    t_leg = at("LEGENDA", 0.06 * total)
+    t_form = at("BENTUK", 0.17 * total)
+    t_mtn = at("GUNUNG YANG", 0.28 * total)
+    t_sign = at("TANDA-TANDA", 0.34 * total)
+    t_erupt = at("NERAKA", 0.49 * total)
+    t_night = at("MATAHARI", 0.60 * total)
+    t_coll = at("RUNTUH", 0.70 * total)
+    t_punah = at("PUNAH", 0.76 * total)
+    t_why = at("MASIH ADA", 0.92 * total)
+
     acts = [
-        (0.0, shots[1]["start"] + 4, "A", 0.30),
-        (shots[1]["start"] + 4, shots[4]["start"], "A", 0.24),
-        (shots[4]["start"], shots[6]["start"], "B1", 0.34),
-        (shots[6]["start"], shots[7]["start"], "B2", 0.40),
-        (shots[7]["start"], shots[9]["start"], "B1", 0.26),
-        (shots[9]["start"], shots[12]["start"], "A", 0.20),
-        (shots[12]["start"], total, "C", 0.34),
+        (0.0, t_leg, "A", 0.30),
+        (t_leg, t_sign, "A", 0.24),
+        (t_sign, t_erupt, "B1", 0.34),
+        (t_erupt, t_night, "B2", 0.42),
+        (t_night, t_punah, "B1", 0.26),
+        (t_punah, t_why, "A", 0.20),
+        (t_why, total, "C", 0.36),
     ]
     music = np.zeros(n, dtype=np.float32)
     for t0, t1, key, gain in acts:
@@ -141,7 +166,6 @@ def main():
             continue
         seg_n = int((t1 - t0) * SR)
         bed = loop_to(beds[key], seg_n + int(2.5 * SR))
-        # crossfade edges
         fade = int(2.0 * SR)
         envl = np.ones(len(bed), dtype=np.float32)
         envl[:fade] *= np.linspace(0, 1, fade)
@@ -154,23 +178,20 @@ def main():
            ("paper", "marker", "rumble", "eruption", "ash", "wind", "water",
             "fire", "heart", "riser", "impact", "stone")}
     cues = np.zeros(n, dtype=np.float32)
-    # transitions: torn paper + marker, on every cut
-    for s in shots[1:]:
-        place(cues, sfx["paper"], s["start"] - 0.30, 0.5)
-        place(cues, sfx["marker"], s["start"] - 0.18, 0.34)
-    # opening impact and hook riser
+    for sh in shots[1:]:
+        place(cues, sfx["paper"], sh["start"] - 0.30, 0.5)
+        place(cues, sfx["marker"], sh["start"] - 0.18, 0.34)
     place(cues, sfx["impact"], 0.02, 0.75)
-    place(cues, sfx["riser"], max(0.2, shots[1]["start"] - 3.2), 0.5)
-    # act-specific textures
-    place(cues, sfx["rumble"], shots[4]["start"] - 1.0, 0.55)
-    place(cues, sfx["eruption"], shots[5]["start"] - 0.6, 0.85)
-    place(cues, sfx["wind"], shots[7]["start"], 0.5)
-    place(cues, sfx["ash"], shots[7]["start"] + 6, 0.45)
-    place(cues, sfx["heart"], shots[9]["start"] + 2, 0.4)
-    place(cues, sfx["wind"], shots[9]["start"], 0.3)
-    place(cues, sfx["fire"], shots[9]["start"] + 8, 0.35)
-    place(cues, sfx["stone"], shots[8]["start"], 0.45)
-    place(cues, sfx["water"], shots[12]["start"], 0.35)
+    place(cues, sfx["riser"], max(0.2, t_leg - 3.2), 0.5)
+    place(cues, sfx["rumble"], t_sign - 1.0, 0.55)
+    place(cues, sfx["eruption"], t_erupt - 0.6, 0.85)
+    place(cues, sfx["wind"], t_night, 0.5)
+    place(cues, sfx["ash"], t_night + 6, 0.45)
+    place(cues, sfx["heart"], t_punah + 2, 0.4)
+    place(cues, sfx["wind"], t_punah, 0.3)
+    place(cues, sfx["fire"], t_coll + 4, 0.35)
+    place(cues, sfx["stone"], t_coll, 0.45)
+    place(cues, sfx["water"], t_why, 0.35)
     place(cues, sfx["impact"], tl["vo_total"], 0.4)
 
     mix = vo_track * 1.0 + music + cues * 0.9

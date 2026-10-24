@@ -6,9 +6,19 @@
 
 ## 1. JUDUL
 
-**Utama:**
+**DIPILIH (final):**
+```
+Toba Meledak 74.000 Tahun Lalu, dan Kita Nyaris Punah
+```
+Alasan: 52 karakter, "Toba" di depan, angka spesifik, dan klaim dramatis yang
+**dibayar tuntas** di video (bab 8–9 justru menjawabnya). Pasangan thumbnail:
+**varian B — "KITA HAMPIR PUNAH?"** (janji judul & gambar sejalan).
+
+**Kandidat lain (untuk Test & Compare berikutnya):**
 ```
 Letusan Toba 74.000 Tahun Lalu: Apakah Kita Hampir Punah?
+Ternyata Toba Tidak Hampir Memusnahkan Kita (Bukti 2024)
+Gunung di Sumatera Ini Melebihi Yellowstone 28 Kali
 ```
 
 **Alternatif (untuk Test & Compare):**
@@ -114,7 +124,7 @@ karakter ≈ 470 — aman di bawah 500.
 | Kategori | Education | membantu klasifikasi |
 | Bahasa video | Indonesian | metadata & subtitle otomatis |
 | Caption | Subtitle Indonesia (`.srt` akan digenerate dari VO) | +retensi, +aksesibilitas |
-| Thumbnail | `social/thumb_A_number_1280x720.jpg` | uji A/B vs B |
+| Thumbnail | `social/thumb_B_question_1280x720.jpg` | **dipilih**; simpan A sebagai cadangan A/B |
 | Komentar | Aktif, moderasi ringan | |
 | "Altered content" | **Tidak** (tidak ada wajah/suara orang nyata) | |
 | End screen | 20 detik terakhir: video berikutnya + playlist | sesi tonton |
@@ -125,9 +135,9 @@ karakter ≈ 470 — aman di bawah 500.
 
 ## 6. RENCANA A/B TEST
 
-1. Unggah dengan **Judul A + Thumbnail A**, tunggu 48 jam.
-2. Jika CTR < 3% dan impresi > 5.000 → tukar thumbnail ke **B**, biarkan
-   judul. Ukur 48 jam.
+1. Unggah dengan **judul final + Thumbnail B**, tunggu 48 jam.
+2. Jika CTR < 3% dan impresi > 5.000 → tukar thumbnail ke **A**
+   (`thumb_A_number`), biarkan judul. Ukur 48 jam.
 3. Jika retensi 30 detik < 60% → masalah **video**, bukan packaging. Pangkas
    intro di episode berikutnya, bukan mengganti judul terus-menerus.
 4. Simpan hasilnya di `docs/07-performa.md` (dibuat setelah data masuk).
